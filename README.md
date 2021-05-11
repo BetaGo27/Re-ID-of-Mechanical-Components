@@ -2,7 +2,9 @@
 ## 1. Introduction
 This is the network built for my master thesis "Object Re-identification for Assembly Parts to Aid Manual Assembly" 
 This Re-ID system has a siamese structure and the locating part is based on Faster R-CNN
-I will load the pretrained model. I will try to modify it later to make it friendly for other datasets.
+I will load the pretrained model and try to modify it later to make it friendly for other datasets.
+![image](https://user-images.githubusercontent.com/78811701/117865317-21646c00-b296-11eb-86c4-43d92d19cdc2.png)
+
 ## 2. Dependencies
 GPU only
 Anaconda
