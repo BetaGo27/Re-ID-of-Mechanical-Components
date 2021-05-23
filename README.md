@@ -1,16 +1,19 @@
 # Re-ID-of-Mechanical-Components based on Faster R-CNN
 ## 1. Introduction
 This is the network built for my master thesis "Object Re-identification for Assembly Parts to Aid Manual Assembly" 
-This Re-ID system has a siamese structure and the locating part is based on Faster R-CNN
-I will load the pretrained model and try to modify it later to make it friendly for other datasets.
+This Re-ID system has a siamese structure and the locating part is based on Faster R-CNN.
+5 losses are to be trained in the learning process.
+The model is modified to fit the specific datasets and usage of the Institute https://www.ifl.kit.edu/index.php
+I will load the pretrained pth file later. 
+It is currently not friendly to be used directly, but i will try to modify it if i had time...
 ![image](https://user-images.githubusercontent.com/78811701/117865317-21646c00-b296-11eb-86c4-43d92d19cdc2.png)
 
 ## 2. Dependencies
-GPU only
-Anaconda
-Pytorch
+***GPU only
+***Anaconda
+***Pytorch
 ## 3. Performance
-Cross Validation is adapted to generate the metrics and thresholds to distinguish same or not
+Cross Validation is adapted to generate the metrics and thresholds to distinguish same or not.
 The mAP will be added later...
 
 ### 3.1 Best Performance on validation set
