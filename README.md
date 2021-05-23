@@ -10,7 +10,7 @@ GPU only
 Anaconda
 Pytorch
 ## 3. Performance
-Cross Validation is adapted to generate the metrics and teh threshold to distinguish same or not
+Cross Validation is adapted to generate the metrics and thresholds to distinguish same or not
 The mAP will be added later...
 
 ### 3.1 Best Performance on validation set
