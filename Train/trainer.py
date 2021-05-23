@@ -74,11 +74,6 @@ class Trainer(nn.Module):
         rpn_loc = rpn_locs[0]
         roi = rois
         # Create Proposal Target
-        # print('roi')
-        # print(roi.shape)
-        # print('at.tonumpy(bbox)')
-        # print(at.tonumpy(bbox).shape)
-
         sample_roi, gt_roi_loc, gt_roi_label, pos_number = \
             self.proposal_filter(roi, at.tonumpy(bbox), self.loc_normalize_mean, self.loc_normalize_std)
 
@@ -136,20 +131,10 @@ class Trainer(nn.Module):
 
         n_embd1 = embed1.shape[0]
         n_embd2 = embed2.shape[0]
-        # embd1 = at.totensor(embedding1)
-        # embd2 = at.totensor(embedding2)
         if n_embd1 > 6:
             embed1 = embed1[0:6, :]
         if n_embd2 > 6:
             embed2 = embed2[0:6, :]
-        # embed1.register_hook(lambda grad: print(f'DEBUG: embed1 grad hook {grad.shape}'))
-
-        # embd1 = Variable(embd1.data, requires_grad = True)
-        # embd2 = Variable(embd2.data, requires_grad=True)
-
-        # check = t.eq(embd1[0], embd2[0])
-        # check = at.tonumpy(check)
-        # print(at.tonumpy(embd1[0])[np.where(check == False)])
         embed1 = l2_norm(embed1)
         embed2 = l2_norm(embed2)
 
@@ -160,23 +145,6 @@ class Trainer(nn.Module):
         # cos_dist = 1 - np.arccos(cos) / np.pi   # [0,1]
         # ang_dist = 1 - t.div(t.acos(cos), math.pi)
         ang_dist = t.div(t.acos(cos), math.pi)  # (1,0)
-
-        # ang_dist = t.sort(ang_dist)
-        # if len(ang_dist) > 2:
-        #     if target.item() == 1.:
-        #         # mask = np.where(ang_dist > thres_l)
-        #         # cos_dist = ang_dist[mask]
-        #         ang_dist =
-        #     elif target.item() == 0.:
-        #         mask = np.where(ang_dist < thres_h)
-        #         cos_dist = ang_dist[mask]
-
-        # if cos_dist.size == 0:
-        #     sm_loss = t.tensor([1 - 1e-4]).cuda()
-        # else:
-        # avg_ang_dist = t.mean(ang_dist)
-        # sm_loss = 0.5 * (target.float() * avg_ang_dist +
-        #                  (1 + (-1 * target)).float() * F.relu(1 - (avg_ang_dist + 1e-7).sqrt()).pow(2))
         log_ang = t.log(ang_dist)
         neg_log_ang = t.log(1 - ang_dist)
         sm_loss = -t.mean(target * neg_log_ang + (1 - target) * log_ang)
@@ -192,9 +160,7 @@ class Trainer(nn.Module):
         roi_cls_loss_total = (losses1[3] + losses2[3]) / 2
 
         Losses = [rpn_loc_loss_total, rpn_cls_loss_total, roi_loc_loss_total, roi_cls_loss_total, sm_loss]
-        # Losses = [rpn_cls_loss_total, roi_cls_loss_total, sm_loss]
         LossTotal = alpha_rpn * (Losses[0] + Losses[1]) + alpha_roi * (Losses[2] + Losses[3]) + alpha_sm * Losses[4]
-        # LossTotal = alpha_roi * (Losses[2] + Losses[3]) + alpha_sm * Losses[4]
         Losses = Losses + [LossTotal]
 
         return LossTuple(*Losses)
@@ -204,7 +170,6 @@ class Trainer(nn.Module):
         losses = self.forward(img1, img2, bbox1, bbox2, target, scale)
         losses.total_loss.backward()
         self.optimizer.step()
-        # self.sm_loss = losses.sm_loss
         self.update_meters(losses)
         return losses
 
